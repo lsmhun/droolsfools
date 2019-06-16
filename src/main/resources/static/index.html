@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Movie comment</title>
+    <meta charset="UTF-8">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <script src="https://unpkg.com/lodash@4.16.0"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        html,
+        body,
+        #editor {
+            margin: 0;
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: -webkit-linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
+            background: linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
+            background-color: #e3e2dd;
+        }
+        
+        textarea {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            min-height: 150px;
+            vertical-align: top;
+            box-sizing: border-box;
+            padding: 0 20px;
+            border: 1px solid #ccc;
+            resize: none;
+            outline: none;
+            background-color: #f6f6f6;
+            font-size: 14px;
+            font-family: 'Monaco', courier, monospace;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: darkorange;
+            text-align: right;
+            font-weight: bold;
+            margin-right: 100px;
+        }
+        
+        code {
+            color: #f66;
+        }
+        
+        .header {
+            background-color: #000;
+            height: 100px;
+            margin: 0px;
+        }
+        
+        .preamb {
+            background-color: #747474;
+            height: 100px;
+            margin: 0px;
+            color: #f6f6f6;
+            padding: 10px;
+        }
+        
+        .navbarSprite {
+            background-color: transparent;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/200px-IMDB_Logo_2016.svg.png');
+            background-attachment: scroll;
+            background-repeat: no-repeat;
+            height: 100px;
+        }
+        
+        li {
+            cursor: pointer;
+        }
+        .facesIcon {
+            color: #f6f6f6;;
+            font-size: 60px;
+            height: 50px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" class="container">
+
+        <div class="row header">
+            <div class="col-md-3 navbarSprite">
+            </div>
+            <div class="col-md-9">
+                <h1>Drools </h1>
+            </div>
+
+        </div>
+        <div class="preamb">
+            This is a just a Drools example<ul>
+                <li>Positive text example: <span v-on:click="addPositiveText">'The movie was cool. The animation and the graphics were out of this world. I would recommend this movie.'</span></li>
+                <li>Negative text example: <span v-on:click="addNegativeText">'This film is shit. Bad actors, terrible story, visually nothing. I lost two hours from my life.'</span></li>
+            </ul>
+        </div>
+
+        <div>
+            <textarea v-model="comment" placeholder="add movie comment"></textarea>
+        </div>
+        <div class="preamb">
+            <button class="btn btn-warning col-md-3" v-on:click="commentPredict2">Comment predict</button>
+            <div class="facesIcon col-md-9">
+                <span v-if="loading" style="font-size: 16px;">Please Wait ...</span>
+                <span v-if="myres == -1.0">?</span>
+
+                <span v-if="(myres <= 0.2) && (myres > 0.0)" style="color: red;">😭</span>
+                <span v-else-if="(myres >= 0.2) && (myres < 0.5)" style="color: yellow;">🙁</span>
+                <span v-else-if="(myres >= 0.5) && (myres < 0.8)" style="color: lightgreen;">🙂</span>
+                <span v-else-if="myres >= 0.8" style="color: lawngreen;">😀</span>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    info: null,
+                    myres: -1.0,
+                    comment: null,
+                    loading: false
+                }
+            },
+            methods: {
+
+                addPositiveText: function() {
+                    this.comment = 'The movie was cool. The animation and the graphics were out of this world. I would recommend this movie.';
+                },
+                addNegativeText: function() {
+                    this.comment = 'This film is shit. Bad actors, terrible story, visually nothing. I lost two hours from my life.';
+                },
+                commentPredict2: function() {
+                    this.loading = true;
+                    var url = window.location.origin;
+                    axios.post(url + '/trigger_rules', {
+                            comment: this.comment
+                        })
+                        .then(response => {
+                            this.myres = response.data;
+                            this.loading = false;
+                            console.log(this.myres);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.loading = false;
+                        });
+                }
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
