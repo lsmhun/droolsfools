@@ -1,7 +1,18 @@
 package hu.lsm.droolsfools.entity;
 
+import lombok.Data;
 
-public class Rule {
+import java.io.Serializable;
+import java.util.List;
 
-    private 
+@Data
+public class EEARule  implements Serializable {
+
+    private Long id;
+    private String name;
+    private boolean enabled;
+
+    private List<EEARuleCondition> eeaRuleConditions;
+    private List<EEARuleAction> eeaRuleActions;
+
 }

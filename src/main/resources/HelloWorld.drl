@@ -1,0 +1,13 @@
+import hu.lsm.droolsfools.dto.IncomingData;
+
+rule "Hello World"
+      dialect "mvel"
+  when
+    m : IncomingData( errorCode == 200, value == "SERVER RESPONSE", message : message )
+  then
+
+    System.out.println( message );
+    //modify ( m ) { message = "OK" };
+    m.setMessage("OK");
+    System.out.println( message );
+end

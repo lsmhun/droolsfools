@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Movie comment</title>
+    <title>Drools fools</title>
     <meta charset="UTF-8">
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
@@ -22,26 +22,10 @@
             background: linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
             background-color: #e3e2dd;
         }
-        
-        textarea {
-            display: inline-block;
-            width: 100%;
-            height: 100%;
-            min-height: 150px;
-            vertical-align: top;
-            box-sizing: border-box;
-            padding: 0 20px;
-            border: 1px solid #ccc;
-            resize: none;
-            outline: none;
-            background-color: #f6f6f6;
-            font-size: 14px;
-            font-family: 'Monaco', courier, monospace;
-            padding: 20px;
-        }
+
         
         h1 {
-            color: darkorange;
+            color: #333;
             text-align: right;
             font-weight: bold;
             margin-right: 100px;
@@ -52,36 +36,49 @@
         }
         
         .header {
-            background-color: #000;
-            height: 100px;
+            background-color: #f8f8f8;
+            height: 70px;
             margin: 0px;
+            border-bottom-style: inset;
         }
         
         .preamb {
-            background-color: #747474;
+            background-color: #f8f8f8;
+            height: 150px;
+            margin: 0px;
+            color: #333;
+            padding: 10px;
+        }
+        .result {
+            background-color: #f8f8f8;
             height: 100px;
             margin: 0px;
-            color: #f6f6f6;
+            color: #333;
             padding: 10px;
+            border-bottom-style: inset;
         }
         
         .navbarSprite {
             background-color: transparent;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/200px-IMDB_Logo_2016.svg.png');
             background-attachment: scroll;
             background-repeat: no-repeat;
-            height: 100px;
+        }
+        .navbarSprite img{
+            padding: 20px 0 0px 0px;
+        }
+        .my-form{
+           background-color: #f8f8f8;
+border: aquamarine;
+border-style: inset;
+        }
+        .my-form-padding{
+           padding: 2px;
         }
         
         li {
             cursor: pointer;
         }
-        .facesIcon {
-            color: #f6f6f6;;
-            font-size: 60px;
-            height: 50px;
-            text-align: right;
-        }
+
     </style>
 </head>
 
@@ -91,32 +88,37 @@
 
         <div class="row header">
             <div class="col-md-3 navbarSprite">
+                <img alt="Drools logo" src="DroolsLogo200px.png">
             </div>
             <div class="col-md-9">
-                <h1>Drools </h1>
+                <h1>Drools Fools</h1>
             </div>
 
         </div>
         <div class="preamb">
-            This is a just a Drools example<ul>
-                <li>Positive text example: <span v-on:click="addPositiveText">'The movie was cool. The animation and the graphics were out of this world. I would recommend this movie.'</span></li>
-                <li>Negative text example: <span v-on:click="addNegativeText">'This film is shit. Bad actors, terrible story, visually nothing. I lost two hours from my life.'</span></li>
+            This is a just a Drools example. Basic example: <a href="https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol">teapot</a> rule.
+            If error code is 418 and time is afternoon.
+            <ul>
+                <li>when ERROR_code=200 then response='OK' </li>
+                <li>when ERROR_code=418 AND message='tea' then response='Tea time'</li>
+                <li>when ERROR_code=404 then response='Not found'</li>
+                <li>Any other case it will respond UNKNOW</li>
             </ul>
         </div>
 
-        <div>
-            <textarea v-model="comment" placeholder="add movie comment"></textarea>
+        <div class="my-form">
+            <div class="container-fluid my-form-padding" ><span class="col-md-2"> ERROR code:</span> <input class="col-md-2" v-model="errorCode" @keypress="isNumber($event)"/>
+            </div>
+            <div class="container-fluid my-form-padding"><span class="col-md-2"> MESSAGE:</span> <input class="col-md-2" v-model="message" >
+            </div>
+            <div class="container-fluid my-form-padding">
+            <button class="btn btn-primary" v-on:click="triggerRules">Trigger rules</button>
+            </div>
         </div>
-        <div class="preamb">
-            <button class="btn btn-warning col-md-3" v-on:click="commentPredict2">Comment predict</button>
+        <div class="result">
             <div class="facesIcon col-md-9">
                 <span v-if="loading" style="font-size: 16px;">Please Wait ...</span>
                 <span v-if="myres == -1.0">?</span>
-
-                <span v-if="(myres <= 0.2) && (myres > 0.0)" style="color: red;">😭</span>
-                <span v-else-if="(myres >= 0.2) && (myres < 0.5)" style="color: yellow;">🙁</span>
-                <span v-else-if="(myres >= 0.5) && (myres < 0.8)" style="color: lightgreen;">🙂</span>
-                <span v-else-if="myres >= 0.8" style="color: lawngreen;">😀</span>
             </div>
         </div>
         </div>
@@ -141,7 +143,7 @@
                 addNegativeText: function() {
                     this.comment = 'This film is shit. Bad actors, terrible story, visually nothing. I lost two hours from my life.';
                 },
-                commentPredict2: function() {
+                triggerRules: function() {
                     this.loading = true;
                     var url = window.location.origin;
                     axios.post(url + '/trigger_rules', {
@@ -156,6 +158,15 @@
                             console.log(error);
                             this.loading = false;
                         });
+                },
+                 isNumber: function(evt) {
+                  evt = (evt) ? evt : window.event;
+                  var charCode = (evt.which) ? evt.which : evt.keyCode;
+                  if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                    evt.preventDefault();;
+                  } else {
+                    return true;
+                  }
                 }
             }
 

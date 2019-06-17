@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @ToString
-public class IncomingAdapter implements Serializable {
+public class IncomingData implements Serializable {
     private String message;
     private int errorCode;
 
