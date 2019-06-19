@@ -11,4 +11,6 @@ public interface RuleRepository
 {
     EEARule findById(Long id);
     List<EEARule> findByRepositoryId(String repositoryId, boolean enabled);
+
+    void saveOrUpdate(EEARule eeaRule);
 }

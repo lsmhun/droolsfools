@@ -65,7 +65,7 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
 
         for(EEARule eeaRule: getActiveRules(repositoryId)){
             String ruleText = eeaRuleConverter.convertRule(eeaRule);
-            String ruleName = eeaRule.getName();
+            String ruleName = eeaRule.getName().trim().replaceAll("\\w", "");
             //
             kieFileSystem.write("src/main/resources/hu/lsm/droolsfools/rules/" + eeaRule.hashCode() + ".drl", ruleText);
         }

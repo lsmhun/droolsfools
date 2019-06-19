@@ -112,7 +112,7 @@ border-style: inset;
             <div class="container-fluid my-form-padding"><span class="col-md-2"> MESSAGE:</span> <input class="col-md-2" v-model="message" >
             </div>
             <div class="container-fluid my-form-padding">
-            <button class="btn btn-primary" v-on:click="triggerRules">Trigger rules</button>
+            <input type="button" class="btn btn-primary" v-on:click="triggerRules">Trigger rules</input>
             </div>
         </div>
         <div class="result">
@@ -146,7 +146,7 @@ border-style: inset;
                 triggerRules: function() {
                     this.loading = true;
                     var url = window.location.origin;
-                    axios.post(url + '/trigger_rules', {
+                    axios.post(url + '/api/trigger_rules/DEFAULT', {
                             comment: this.comment
                         })
                         .then(response => {

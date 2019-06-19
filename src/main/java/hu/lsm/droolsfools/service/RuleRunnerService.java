@@ -4,6 +4,8 @@ import hu.lsm.droolsfools.dto.IncomingData;
 
 public interface RuleRunnerService {
 
-    void runRules(IncomingData incoming);
+    String DEFAULT_REPO = "DEFAULT";
+
+    void runRules(String repositoryId, IncomingData incoming);
 
 }

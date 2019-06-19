@@ -12,7 +12,7 @@ public class EEARule  implements Serializable {
     private String name;
     private boolean enabled;
 
-    private List<EEARuleCondition> eeaRuleConditions;
+    private List<EEARuleConditionGroup> eeaRuleConditionGroups;
     private List<EEARuleAction> eeaRuleActions;
 
 }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EEARuleConverter implements RuleToDroolsConverter {
 
+    private final static String TEMPLATE =
+            "";
 
     @Override
     public String convertRule(EEARule eeaRule) {

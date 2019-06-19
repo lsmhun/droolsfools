@@ -3,7 +3,9 @@ package hu.lsm.droolsfools.service.impl;
 import hu.lsm.droolsfools.compiler.EEARuleConverter;
 import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.dto.IncomingData;
+import hu.lsm.droolsfools.dto.IncomingDataAdapter;
 import hu.lsm.droolsfools.entity.EEARule;
+import hu.lsm.droolsfools.service.RuleRunnerService;
 import hu.lsm.droolsfools.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +43,8 @@ public class RuleRunnerServiceImplTest {
     public void runRuleNotChanged() {
         IncomingData incomingData = new IncomingData();
         incomingData.setErrorCode(200);
-        ruleRunnerService.runRules(incomingData);
+        IncomingDataAdapter incomingDataAdapter = new IncomingDataAdapter(incomingData);
+        ruleRunnerService.runRules(RuleRunnerService.DEFAULT_REPO, incomingData);
         assertNotEquals("OK", incomingData.getMessage());
     }
 
@@ -50,7 +53,7 @@ public class RuleRunnerServiceImplTest {
         IncomingData incomingData = new IncomingData();
         incomingData.setErrorCode(200);
         incomingData.setValue("SERVER RESPONSE");
-        ruleRunnerService.runRules(incomingData);
+        ruleRunnerService.runRules(RuleRunnerService.DEFAULT_REPO, incomingData);
         assertEquals("OK", incomingData.getMessage());
     }
 }

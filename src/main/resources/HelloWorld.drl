@@ -1,9 +1,9 @@
-import hu.lsm.droolsfools.dto.IncomingData;
+import hu.lsm.droolsfools.dto.IncomingDataAdapter;
 
-rule "Hello World"
+rule "%s"
       dialect "mvel"
   when
-    m : IncomingData( errorCode == 200, value == "SERVER RESPONSE", message : message )
+    m : IncomingDataAdapter( incomingData.errorCode == 200, message : message )
   then
 
     System.out.println( message );
