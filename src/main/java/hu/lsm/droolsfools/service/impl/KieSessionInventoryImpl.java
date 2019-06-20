@@ -11,6 +11,7 @@ import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,7 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
 
     private KieFileSystem addRules(String repositoryId){
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
+
 
         for(EEARule eeaRule: getActiveRules(repositoryId)){
             String ruleText = eeaRuleConverter.convertRule(eeaRule);

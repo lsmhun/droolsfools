@@ -2,6 +2,7 @@ package hu.lsm.droolsfools.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.Getter;
 
 import java.io.Serializable;
 
@@ -18,10 +19,11 @@ public class EEARuleCondition implements Serializable {
 
         EQUAL("="), NOT_EQUAL("!="), LT("<"), LEQ("<="), GT(">"), GEQ(">="), REGEXP("(?s).*");
 
-        private String ruleOperatorString;
+        @Getter
+        private String operator;
 
         RuleOperator(String operator){
-            this.ruleOperatorString = operator;
+            this.operator = operator;
         }
 
     }

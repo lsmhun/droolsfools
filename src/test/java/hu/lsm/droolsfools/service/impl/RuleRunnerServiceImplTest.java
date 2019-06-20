@@ -5,6 +5,7 @@ import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.dto.IncomingData;
 import hu.lsm.droolsfools.dto.IncomingDataAdapter;
 import hu.lsm.droolsfools.entity.EEARule;
+import hu.lsm.droolsfools.service.RuleActionService;
 import hu.lsm.droolsfools.service.RuleRunnerService;
 import hu.lsm.droolsfools.util.TestUtil;
 import org.junit.Before;
@@ -17,7 +18,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class RuleRunnerServiceImplTest {
 
@@ -27,9 +30,12 @@ public class RuleRunnerServiceImplTest {
     @Mock
     private EEARuleConverter eeaRuleConverter = mock(EEARuleConverter.class);
 
+    @Mock
+    private RuleActionService ruleActionService = mock(RuleActionServiceImpl.class);
+
     private KieSessionInventoryImpl kieSessionInventory = new KieSessionInventoryImpl(ruleRepository, eeaRuleConverter);
 
-    private RuleRunnerServiceImpl ruleRunnerService = new RuleRunnerServiceImpl(kieSessionInventory);
+    private RuleRunnerServiceImpl ruleRunnerService = new RuleRunnerServiceImpl(kieSessionInventory, ruleActionService);
 
     @Before
     public void setUp() throws Exception {
@@ -40,20 +46,20 @@ public class RuleRunnerServiceImplTest {
     }
 
     @Test
-    public void runRuleNotChanged() {
+    public void ruleTriggered() {
         IncomingData incomingData = new IncomingData();
         incomingData.setErrorCode(200);
-        IncomingDataAdapter incomingDataAdapter = new IncomingDataAdapter(incomingData);
         ruleRunnerService.runRules(RuleRunnerService.DEFAULT_REPO, incomingData);
-        assertNotEquals("OK", incomingData.getMessage());
+        verify(ruleActionService, times(1)).generateEvent(any(IncomingData.class));
+        //assertNotEquals("OK", incomingData.getMessage());
     }
 
     @Test
-    public void runRuleChanged() {
+    public void ruleNotTriggered() {
         IncomingData incomingData = new IncomingData();
-        incomingData.setErrorCode(200);
-        incomingData.setValue("SERVER RESPONSE");
+        incomingData.setErrorCode(123);
         ruleRunnerService.runRules(RuleRunnerService.DEFAULT_REPO, incomingData);
-        assertEquals("OK", incomingData.getMessage());
+        verify(ruleActionService, times(0)).generateEvent(any(IncomingData.class));
+        //assertEquals("OK", incomingData.getMessage());
     }
 }

@@ -7,6 +7,7 @@ public class RuleActionServiceImpl implements RuleActionService {
 
     @Override
     public void generateEvent(IncomingData incomingData) {
+        // TODO
 
     }
 }

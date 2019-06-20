@@ -1,13 +1,13 @@
 import hu.lsm.droolsfools.dto.IncomingDataAdapter;
 
-rule "%s"
+rule "dasfasd"
       dialect "mvel"
   when
-    m : IncomingDataAdapter( incomingData.errorCode == 200, message : message )
+    ida : IncomingDataAdapter(
+            incomingData.errorCode == 200 &&
+            incomingData.value == null
+            )
   then
-
-    System.out.println( message );
-    //modify ( m ) { message = "OK" };
-    m.setMessage("OK");
-    System.out.println( message );
+    System.out.println( ida );
+    ida.triggerAction();
 end

@@ -16,20 +16,18 @@ public class TestUtil {
             "rule \"Hello World\"\n" +
             "      dialect \"mvel\"\n" +
             "  when\n" +
-            "    m : IncomingDataAdapter( errorCode == 200, value == \"SERVER RESPONSE\", message : message )\n" +
+            "    ida : IncomingDataAdapter( incomingData.errorCode == 200)\n" +
             "  then\n" +
             "\n" +
-            "    System.out.println( message );\n" +
-            "    //modify ( m ) { message = \"OK\" };\n" +
-            "    m.setMessage(\"OK\");\n" +
-            "    System.out.println( message );\n" +
+            "    System.out.println( ida );\n" +
+            "    ida.triggerActions();\n" +
             "end";
 
     public static EEARuleCondition getEEARuleCondition(){
         EEARuleCondition eeaRuleCondition = new EEARuleCondition();
         eeaRuleCondition.setId(1L);
         RuleConditionOption ruleConditionOption = new RuleConditionOption();
-        ruleConditionOption.setOptionName("ERROR_CODE");
+        ruleConditionOption.setOptionName("errorCode");
         eeaRuleCondition.setOption(ruleConditionOption);
         eeaRuleCondition.setRuleOperator(EEARuleCondition.RuleOperator.EQUAL);
         eeaRuleCondition.setValue("200");
