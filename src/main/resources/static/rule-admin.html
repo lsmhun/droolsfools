@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Drools fools - Rule Admin</title>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
+    <script src="https://unpkg.com/lodash@4.16.0"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <style>
+        html,
+        body,
+        #editor {
+            margin: 0;
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background: -webkit-linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
+            background: linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
+            background-color: #e3e2dd;
+        }
+
+        
+        h1 {
+            color: #333;
+            text-align: right;
+            font-weight: bold;
+            margin-right: 100px;
+        }
+        
+        code {
+            color: #f66;
+        }
+        
+        .header {
+            background-color: #f8f8f8;
+            height: 70px;
+            margin: 0px;
+            border-bottom-style: inset;
+        }
+        
+        .preamb {
+            background-color: #f8f8f8;
+            height: 150px;
+            margin: 0px;
+            color: #333;
+            padding: 10px;
+        }
+        .result {
+            background-color: #f8f8f8;
+            height: 100px;
+            margin: 0px;
+            color: #333;
+            padding: 10px;
+            border-bottom-style: inset;
+        }
+        
+        .navbarSprite {
+            background-color: transparent;
+            background-attachment: scroll;
+            background-repeat: no-repeat;
+        }
+        .navbarSprite img{
+            padding: 20px 0 0px 0px;
+        }
+        .my-form{
+           background-color: #f8f8f8;
+border: aquamarine;
+border-style: inset;
+        }
+        .my-form-padding{
+           padding: 2px;
+        }
+        
+        li {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="app" class="container">
+
+        <div class="row header">
+            <div class="col-sm-3 navbarSprite">
+                <img alt="Drools logo" src="DroolsLogo200px.png">
+            </div>
+            <div class="col-sm-9">
+                <h1>Drools Fools</h1>
+            </div>
+
+        </div>
+
+        <div class="my-form">
+            <div v-for="udata in rules">
+                Id : {{ udata.id }} Name: {{ udata.name }}
+            </div>
+            <div class="container">
+                <div v-for="group in rules[0].eeaRuleConditionGroups">
+                Id : {{ group.id }} 
+                    <div v-for="condition in group.eeaRuleConditions">
+        <div class="container">
+            <div class="col-sm-3">
+<select v-model="testVal">
+        <option v-for="item in conditionOptions" :value="condition.option.optionName" 
+:selected="item == condition.option.optionName">{{item}}</option>
+    </select>
+ </div>
+            <div class="col-sm-2">
+<select v-model="testVal">
+        <option v-for="item in operators" :value="condition.ruleOperator" >{{item}}</option>
+    </select></div>
+            <div class="col-sm-7">
+<input type="text" v-model="condition.value" />
+</div>            
+            </div>
+                    </div>
+                </div>
+<div v-for="action in rules[0].eeaRuleActions">
+        <div class="container">
+             <div class="col-sm-3"> {{ action.ruleActionType }} </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            <button class="btn btn-primary" v-on:click="triggerRules">Add rules</button>
+        </div>
+
+    </div>
+
+    <script>
+
+var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                conditionOptions: ["ERROR_CODE","VALUE"],
+                operators : ["=","<",">","<=",">=", "REGEXP"],
+                actionTypes : ["GENERATE_EVENT"], 
+                rules: [{"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"GENERATE_EVENT"}]}] // initialize empty array
+              },
+              mounted() { // when the Vue app is booted up, this is run automatically.
+                var self = this; // create a closure to access component in the callback below
+                //$.getJSON(dataURL, function(data) {
+                //  self.rules = data;
+                //});
+                //this.rules[0] = {"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"GENERATE_EVENT"}]};
+              },
+            methods: {
+
+
+                triggerRules: function() {
+                    this.loading = true;
+                    var url = window.location.origin;
+                    axios.post(url + '/api/trigger_rules/DEFAULT', {
+                            errorCode: this.errorCode,
+                            value: this.value
+                        })
+                        .then(response => {
+                            this.myres = response.data;
+                            this.loading = false;
+                            console.log(this.myres);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.loading = false;
+                        });
+                },
+                 isNumber: function(evt) {
+                  evt = (evt) ? evt : window.event;
+                  var charCode = (evt.which) ? evt.which : evt.keyCode;
+                  if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+                    evt.preventDefault();;
+                  } else {
+                    return true;
+                  }
+                }
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
