@@ -17,7 +17,7 @@ public class EEARuleCondition implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     public enum RuleOperator {
 
-        EQUAL("="), NOT_EQUAL("!="), LT("<"), LEQ("<="), GT(">"), GEQ(">="), REGEXP("(?s).*");
+        EQUAL("=="), NOT_EQUAL("!="), LT("<"), LEQ("<="), GT(">"), GEQ(">="), REGEXP("(?s).*");
 
         @Getter
         private String operator;

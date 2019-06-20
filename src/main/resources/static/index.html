@@ -109,10 +109,10 @@ border-style: inset;
         <div class="my-form">
             <div class="container-fluid my-form-padding" ><span class="col-md-2"> ERROR code:</span> <input class="col-md-2" v-model="errorCode" @keypress="isNumber($event)"/>
             </div>
-            <div class="container-fluid my-form-padding"><span class="col-md-2"> MESSAGE:</span> <input class="col-md-2" v-model="message" >
+            <div class="container-fluid my-form-padding"><span class="col-md-2"> VALUE:</span> <input class="col-md-2" v-model="value" />
             </div>
             <div class="container-fluid my-form-padding">
-            <input type="button" class="btn btn-primary" v-on:click="triggerRules">Trigger rules</input>
+            <button class="btn btn-primary" v-on:click="triggerRules">Trigger rules</button>
             </div>
         </div>
         <div class="result">
@@ -132,6 +132,8 @@ border-style: inset;
                     info: null,
                     myres: -1.0,
                     comment: null,
+                    errorCode: 200,
+                    value: 'OK',
                     loading: false
                 }
             },
@@ -147,7 +149,8 @@ border-style: inset;
                     this.loading = true;
                     var url = window.location.origin;
                     axios.post(url + '/api/trigger_rules/DEFAULT', {
-                            comment: this.comment
+                            errorCode: this.errorCode,
+                            value: this.value
                         })
                         .then(response => {
                             this.myres = response.data;

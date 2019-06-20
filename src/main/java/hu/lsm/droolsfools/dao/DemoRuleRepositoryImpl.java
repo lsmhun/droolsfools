@@ -21,7 +21,7 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     public final Logger LOG = LoggerFactory.getLogger(DemoRuleRepositoryImpl.class);
 
     private final static String[] DEMO_RULES = {
-            "{\"id\":1,\"name\":\"Test rule\",\"enabled\":true,\"eeaRuleConditionGroups\":[{\"id\":1,\"eeaRuleConditions\":[{\"id\":1,\"option\":{\"optionName\":\"ERROR_CODE\"},\"ruleOperator\":\"EQUAL\",\"value\":\"200\"}]}],\"eeaRuleActions\":[{\"id\":1,\"ruleActionType\":\"GENERATE_EVENT\"}]}"
+            "{\"id\":1,\"name\":\"Test rule\",\"enabled\":true,\"eeaRuleConditionGroups\":[{\"id\":1,\"eeaRuleConditions\":[{\"id\":1,\"option\":{\"optionName\":\"errorCode\"},\"ruleOperator\":\"EQUAL\",\"value\":\"200\"}]}],\"eeaRuleActions\":[{\"id\":1,\"ruleActionType\":\"GENERATE_EVENT\"}]}"
     };
 
     private List<EEARule> eeaRuleList = new ArrayList<>();

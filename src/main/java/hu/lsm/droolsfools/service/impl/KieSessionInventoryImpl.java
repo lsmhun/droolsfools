@@ -12,6 +12,8 @@ import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ import java.util.Map;
 @Service
 public class KieSessionInventoryImpl implements KieSessionInventory {
 
+    private static final Logger LOG = LoggerFactory.getLogger(KieSessionInventoryImpl.class);
     private final RuleRepository ruleRepository;
 
     private final EEARuleConverter eeaRuleConverter;
@@ -68,6 +71,9 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
         for(EEARule eeaRule: getActiveRules(repositoryId)){
             String ruleText = eeaRuleConverter.convertRule(eeaRule);
             String ruleName = eeaRule.getName().trim().replaceAll("\\w", "");
+            if(LOG.isDebugEnabled()){
+                LOG.debug(ruleName + " : " + ruleText);
+            }
             //
             kieFileSystem.write("src/main/resources/hu/lsm/droolsfools/rules/" + eeaRule.hashCode() + ".drl", ruleText);
         }
