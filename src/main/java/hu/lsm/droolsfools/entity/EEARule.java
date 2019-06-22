@@ -11,6 +11,7 @@ public class EEARule  implements Serializable {
     private Long id;
     private String name;
     private boolean enabled;
+    private int priority = 100;
 
     private List<EEARuleConditionGroup> eeaRuleConditionGroups;
     private List<EEARuleAction> eeaRuleActions;

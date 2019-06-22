@@ -14,6 +14,8 @@ public class EEARuleConverter implements RuleToDroolsConverter {
 
     private final static String TEMPLATE =
             "import hu.lsm.droolsfools.dto.IncomingDataAdapter;\n" +
+                    "import hu.lsm.droolsfools.dto.ResultEventAdapter;\n" +
+                    "import hu.lsm.droolsfools.entity.ResultEvent;\n" +
                     "\n" +
                     "rule \"%s\"\n" +
                     "      dialect \"mvel\"\n" +
@@ -41,7 +43,7 @@ public class EEARuleConverter implements RuleToDroolsConverter {
         for(EEARuleCondition eeaRuleCondition : eeaRuleConditionGroup.getEeaRuleConditions()){
             conditions.add(generateCondition(eeaRuleCondition));
         }
-        whenBlock = String.join( " && ", conditions);
+        whenBlock += String.join( " && ", conditions);
         return whenBlock;
     }
 
@@ -56,18 +58,28 @@ public class EEARuleConverter implements RuleToDroolsConverter {
 
     private String generateRuleAction(EEARuleAction eeaRuleAction){
         String ruleAction = "";
-        if(eeaRuleAction.getRuleActionType() == EEARuleAction.RuleActionType.GENERATE_EVENT){
-            ruleAction += "ida.triggerActions();\n";
+        switch (eeaRuleAction.getRuleActionType()) {
+            case POPULATE_DEFAULT_VALUES:
+                ruleAction += "rea.populateDefaultValues(ida.getIncomingData());\n";
+                break;
+            case POPULATE_MESSAGE:
+                ruleAction += "rea.populateMessage(\"" + eeaRuleAction.getValue() + "\");\n";
+                break;
+            case POPULATE_RESULT_EVENT_TYPE:
+                ruleAction += "rea.populateEventType(" + eeaRuleAction.getValue() + ");\n";
+                break;
         }
+
         return ruleAction;
     }
 
     private String generateActionGroup(EEARule eeaRule){
+        String actionBlock = "ResultEventAdapter rea = ida.getResultEventAdapter();\n";
         List<String> actions = new ArrayList<>(eeaRule.getEeaRuleActions().size());
         for(EEARuleAction eeaRuleAction : eeaRule.getEeaRuleActions()){
             actions.add(generateRuleAction(eeaRuleAction));
         }
-        String actionBlock = String.join(" ;\n ", actions);
+        actionBlock += String.join(" ;\n ", actions);
         return actionBlock;
     }
 

@@ -6,21 +6,26 @@ import hu.lsm.droolsfools.entity.EEARuleCondition;
 import hu.lsm.droolsfools.entity.EEARuleConditionGroup;
 import hu.lsm.droolsfools.entity.RuleConditionOption;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 
 public class TestUtil {
 
-    public static final String HELLO_WORLD_DRL = "import hu.lsm.droolsfools.dto.IncomingDataAdapter;\n" +
+    public static final String RESULT_RULE_TEXT = "" +
+            "import hu.lsm.droolsfools.dto.IncomingDataAdapter;\n" +
+            "import hu.lsm.droolsfools.dto.ResultEventAdapter;\n" +
+            "import hu.lsm.droolsfools.entity.ResultEvent;\n" +
             "\n" +
-            "rule \"Hello World\"\n" +
+            "rule \"Test rule\"\n" +
             "      dialect \"mvel\"\n" +
             "  when\n" +
-            "    ida : IncomingDataAdapter( incomingData.errorCode == 200)\n" +
+            "    ida : IncomingDataAdapter(\n" +
+            "             incomingData.errorCode == 200             )\n" +
             "  then\n" +
-            "\n" +
             "    System.out.println( ida );\n" +
-            "    ida.triggerActions();\n" +
+            "    // \n" +
+            "    ResultEventAdapter rea = ida.getResultEventAdapter();\n" +
+            "rea.populateMessage(\"Message\");\n" +
+            "\n" +
             "end";
 
     public static EEARuleCondition getEEARuleCondition(){
@@ -43,7 +48,8 @@ public class TestUtil {
     public static EEARuleAction getEEARuleAction(){
         EEARuleAction eeaRuleAction = new EEARuleAction();
         eeaRuleAction.setId(1L);
-        eeaRuleAction.setRuleActionType(EEARuleAction.RuleActionType.GENERATE_EVENT);
+        eeaRuleAction.setRuleActionType(EEARuleAction.RuleActionType.POPULATE_MESSAGE);
+        eeaRuleAction.setValue("Message");
         return eeaRuleAction;
     }
 

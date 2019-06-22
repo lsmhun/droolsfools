@@ -96,12 +96,14 @@ border-style: inset;
 
         </div>
         <div class="preamb">
-            This is a just a Drools example. Basic example: <a href="https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol">teapot</a> rule.
-            If error code is 418 and time is afternoon.
+            This is a just a Drools example. Basic example:
+            <a href="https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol">teapot</a> rule.
+            If error code is 418 and time is afternoon. You can change the rules on
+            <a href="rule-admin.html">rule admin</a> page.
             <ul>
                 <li>when ERROR_code=200 then response='OK' </li>
-                <li>when ERROR_code=418 AND message='tea' then response='Tea time'</li>
-                <li>when ERROR_code=404 then response='Not found'</li>
+                <li>when ERROR_code=418 AND message='tea' then response.message='Tea time'</li>
+                <li>when ERROR_code=404 then response.message='Not found'</li>
                 <li>Any other case it will respond UNKNOW</li>
             </ul>
         </div>

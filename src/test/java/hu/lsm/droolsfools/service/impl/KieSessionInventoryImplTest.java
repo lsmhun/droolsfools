@@ -7,15 +7,15 @@ import hu.lsm.droolsfools.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.runtime.KieSession;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +33,7 @@ public class KieSessionInventoryImplTest {
     public void setUp(){
         List<EEARule> ruleList = Collections.singletonList(TestUtil.getEEARule());
         when(ruleRepository.findByRepositoryId(anyString(), anyBoolean())).thenReturn(ruleList);
-        when(eeaRuleConverter.convertRule(any(EEARule.class))).thenReturn(TestUtil.HELLO_WORLD_DRL);
+        when(eeaRuleConverter.convertRule(any(EEARule.class))).thenReturn(TestUtil.RESULT_RULE_TEXT);
         kieSessionInventory = new KieSessionInventoryImpl(ruleRepository, eeaRuleConverter);
     }
 

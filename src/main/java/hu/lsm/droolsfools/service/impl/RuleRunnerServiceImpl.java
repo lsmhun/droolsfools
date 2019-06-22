@@ -29,9 +29,8 @@ public class RuleRunnerServiceImpl implements RuleRunnerService {
     public void runRules(String repositoryId, IncomingData incoming) {
         KieSession kieSession = kieSessionInventory.getKieSession(repositoryId);
         IncomingDataAdapter incomingDataAdapter = new IncomingDataAdapter(incoming);
-        incomingDataAdapter.setRuleActionService(ruleActionService);
         kieSession.insert(incomingDataAdapter);
         kieSession.fireAllRules();
-
+        ruleActionService.processResultEvent(incomingDataAdapter.getResultEventAdapter().getResultEvent());
     }
 }

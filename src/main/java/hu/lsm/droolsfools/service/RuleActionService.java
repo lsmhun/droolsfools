@@ -1,9 +1,9 @@
 package hu.lsm.droolsfools.service;
 
-import hu.lsm.droolsfools.dto.IncomingData;
+import hu.lsm.droolsfools.entity.ResultEvent;
 
 public interface RuleActionService {
 
-    void generateEvent(IncomingData incomingData);
+    void processResultEvent(ResultEvent resultEvent);
 
 }

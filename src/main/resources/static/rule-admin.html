@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Drools fools - Rule Admin</title>
     <meta charset="UTF-8">
@@ -23,25 +22,25 @@
             background-color: #e3e2dd;
         }
 
-        
+
         h1 {
             color: #333;
             text-align: right;
             font-weight: bold;
             margin-right: 100px;
         }
-        
+
         code {
             color: #f66;
         }
-        
+
         .header {
             background-color: #f8f8f8;
             height: 70px;
             margin: 0px;
             border-bottom-style: inset;
         }
-        
+
         .preamb {
             background-color: #f8f8f8;
             height: 150px;
@@ -57,7 +56,7 @@
             padding: 10px;
             border-bottom-style: inset;
         }
-        
+
         .navbarSprite {
             background-color: transparent;
             background-attachment: scroll;
@@ -74,67 +73,61 @@ border-style: inset;
         .my-form-padding{
            padding: 2px;
         }
-        
+
         li {
             cursor: pointer;
         }
 
     </style>
 </head>
-
 <body>
-
-    <div id="app" class="container">
-
-        <div class="row header">
-            <div class="col-sm-3 navbarSprite">
-                <img alt="Drools logo" src="DroolsLogo200px.png">
-            </div>
-            <div class="col-sm-9">
-                <h1>Drools Fools</h1>
-            </div>
-
+<div id="app" class="container">
+    <div class="row header">
+        <div class="col-sm-3 navbarSprite">
+            <img alt="Drools logo" src="DroolsLogo200px.png">
         </div>
-
-        <div class="my-form">
-            <div v-for="udata in rules">
-                Id : {{ udata.id }} Name: {{ udata.name }}
-            </div>
-            <div class="container">
-                <div v-for="group in rules[0].eeaRuleConditionGroups">
-                Id : {{ group.id }} 
-                    <div v-for="condition in group.eeaRuleConditions">
+        <div class="col-sm-9">
+            <h1>Drools Fools</h1>
+        </div>
+    </div>
+    <div class="my-form">
+        <div v-for="udata in rules">
+            Id : {{ udata.id }} Name: {{ udata.name }}
+        </div>
         <div class="container">
-            <div class="col-sm-3">
-<select v-model="testVal">
-        <option v-for="item in conditionOptions" :value="condition.option.optionName" 
-:selected="item == condition.option.optionName">{{item}}</option>
-    </select>
- </div>
-            <div class="col-sm-2">
-<select v-model="testVal">
-        <option v-for="item in operators" :value="condition.ruleOperator" >{{item}}</option>
-    </select></div>
-            <div class="col-sm-7">
-<input type="text" v-model="condition.value" />
-</div>            
-            </div>
+            <div v-for="group in rules[0].eeaRuleConditionGroups">
+                Id : {{ group.id }}
+
+                <div v-for="condition in group.eeaRuleConditions">
+                    <div class="container">
+                        <div class="col-sm-3">
+                            <select v-model="testVal">
+                                <option v-for="item in conditionOptions" :value="condition.option.optionName"
+                                        :selected="item == condition.option.optionName">{{item}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select v-model="testVal">
+                                <option v-for="item in operators" :value="condition.ruleOperator" >{{item}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-7">
+                            <input type="text" v-model="condition.value" />
+                        </div>
                     </div>
                 </div>
-<div v-for="action in rules[0].eeaRuleActions">
-        <div class="container">
-             <div class="col-sm-3"> {{ action.ruleActionType }} </div>
             </div>
+            <div v-for="action in rules[0].eeaRuleActions">
+                <div class="container">
+                    <div class="col-sm-3"> {{ action.ruleActionType }} </div>
+                </div>
             </div>
-            </div>
-            </div>
-
-            <button class="btn btn-primary" v-on:click="triggerRules">Add rules</button>
         </div>
-
     </div>
-
-    <script>
+    <button class="btn btn-primary" v-on:click="triggerRules">Add rules</button>
+</div>
+</div>
+<script>
 
 var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
 
@@ -143,7 +136,8 @@ var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
             data: {
                 conditionOptions: ["ERROR_CODE","VALUE"],
                 operators : ["=","<",">","<=",">=", "REGEXP"],
-                actionTypes : ["GENERATE_EVENT"], 
+                actionTypes : ["POPULATE_DEFAULT_VALUES","POPULATE_RESULT_EVENT_TYPE", "POPULATE_MESSAGE",
+                                "POPULATE_RESULT_EVENT_TYPE"],
                 rules: [{"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"GENERATE_EVENT"}]}] // initialize empty array
               },
               mounted() { // when the Vue app is booted up, this is run automatically.
@@ -185,8 +179,7 @@ var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
             }
 
         })
-    </script>
 
+				</script>
 </body>
-
 </html>

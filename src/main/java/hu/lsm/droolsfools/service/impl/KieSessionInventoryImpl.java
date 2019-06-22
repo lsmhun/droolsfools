@@ -5,13 +5,16 @@ import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.entity.EEARule;
 import hu.lsm.droolsfools.service.KieSessionInventory;
 import org.kie.api.KieServices;
-import org.kie.api.builder.*;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.KieRepository;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.ReleaseId;
 import org.kie.api.event.rule.DebugAgendaEventListener;
 import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.internal.io.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,12 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
             kieSessionMap.put(repositoryId, kieSession);
         }
         return kieSession;
+    }
+
+    @Override
+    public void resetKieSession(String repositoryId) {
+        kieSessionMap.remove(repositoryId);
+        initKieSession(repositoryId);
     }
 
     private List<EEARule> getActiveRules(String repositoryId){

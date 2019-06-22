@@ -6,4 +6,6 @@ public interface KieSessionInventory {
 
     KieSession getKieSession(String repositoryId);
 
+    void resetKieSession(String repositoryId);
+
 }
