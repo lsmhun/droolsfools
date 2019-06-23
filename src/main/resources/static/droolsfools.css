@@ -1,0 +1,83 @@
+html,
+body,
+#editor {
+    margin: 0;
+    height: 100%;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    background: -webkit-linear-gradient(top, rebeccapurple 0%, #e3e2dd 500px);
+    background: linear-gradient(top, rebeccapurple 0%, #e3e2dd 500px);
+    //background: -webkit-linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
+    //background: linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
+    background-color: #e3e2dd;
+}
+
+
+h1 {
+    color: #333;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 100px;
+}
+
+code {
+    color: #f66;
+}
+
+.header {
+    background-color: #f8f8f8;
+    height: 70px;
+    margin: 0px;
+    border-bottom-style: inset;
+}
+
+.preamb {
+    background-color: #f8f8f8;
+    height: 150px;
+    margin: 0px;
+    color: #333;
+    padding: 10px;
+}
+.result {
+    background-color: #f8f8f8;
+    height: 100px;
+    margin: 0px;
+    color: #333;
+    padding: 10px;
+    border-bottom-style: inset;
+}
+
+.navbarSprite {
+    background-color: transparent;
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+}
+.navbarSprite img{
+    padding: 20px 0 0px 0px;
+}
+.my-form{
+   background-color: #f8f8f8;
+}
+.my-form-padding{
+   padding: 2px;
+}
+
+li {
+    cursor: pointer;
+}
+
+.w100{
+width:100%;
+}
+ .condition-group{
+margin:2px;
+background-color: #f8fff;
+}
+.condition{
+margin:2px;
+background-color: #fff;
+}
+.rule-action{
+margin:2px;
+background-color: #fff;
+}

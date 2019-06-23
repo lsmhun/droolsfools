@@ -2,6 +2,7 @@ package hu.lsm.droolsfools.controller;
 
 import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.entity.EEARule;
+import hu.lsm.droolsfools.service.KieSessionInventory;
 import hu.lsm.droolsfools.service.RuleRunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +21,9 @@ public class EEARuleController {
     @Autowired
     private RuleRepository ruleRepository;
 
+    @Autowired
+    private KieSessionInventory kieSessionInventory;
+
     @GetMapping("/api/eea-rules/{repositoryId}/get-rules")
     @ResponseBody
     public List<EEARule> getEEARuleList(@PathVariable(name="repositoryId") String repositoryId){
@@ -36,9 +40,10 @@ public class EEARuleController {
 
     @PostMapping(path = "/api/eea-rules/{repositoryId}/update-rule",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public void triggerRules(
+    public void updateEEARule(
             @PathVariable(name="repositoryId") String repositoryId,
             @RequestBody EEARule eeaRule){
         ruleRepository.saveOrUpdate(eeaRule);
+        kieSessionInventory.resetKieSession(repositoryId);
     }
 }

@@ -1,151 +1,158 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Drools fools - Rule Admin</title>
-    <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/marked@0.3.6"></script>
-    <script src="https://unpkg.com/lodash@4.16.0"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous">
-    <style>
-        html,
-        body,
-        #editor {
-            margin: 0;
-            height: 100%;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #333;
-            background: -webkit-linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
-            background: linear-gradient(top, #b3b3b0 0%, #e3e2dd 500px);
-            background-color: #e3e2dd;
-        }
-
-
-        h1 {
-            color: #333;
-            text-align: right;
-            font-weight: bold;
-            margin-right: 100px;
-        }
-
-        code {
-            color: #f66;
-        }
-
-        .header {
-            background-color: #f8f8f8;
-            height: 70px;
-            margin: 0px;
-            border-bottom-style: inset;
-        }
-
-        .preamb {
-            background-color: #f8f8f8;
-            height: 150px;
-            margin: 0px;
-            color: #333;
-            padding: 10px;
-        }
-        .result {
-            background-color: #f8f8f8;
-            height: 100px;
-            margin: 0px;
-            color: #333;
-            padding: 10px;
-            border-bottom-style: inset;
-        }
-
-        .navbarSprite {
-            background-color: transparent;
-            background-attachment: scroll;
-            background-repeat: no-repeat;
-        }
-        .navbarSprite img{
-            padding: 20px 0 0px 0px;
-        }
-        .my-form{
-           background-color: #f8f8f8;
-border: aquamarine;
-border-style: inset;
-        }
-        .my-form-padding{
-           padding: 2px;
-        }
-
-        li {
-            cursor: pointer;
-        }
-
-    </style>
+	<head>
+		<title>Drools fools - Rule Admin</title>
+		<meta charset="UTF-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/marked@0.3.6"></script>
+		<script src="https://unpkg.com/lodash@4.16.0"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="droolsfools.css" />
 </head>
 <body>
-<div id="app" class="container">
-    <div class="row header">
-        <div class="col-sm-3 navbarSprite">
-            <img alt="Drools logo" src="DroolsLogo200px.png">
-        </div>
-        <div class="col-sm-9">
-            <h1>Drools Fools</h1>
-        </div>
-    </div>
-    <div class="my-form">
-        <div v-for="udata in rules">
-            Id : {{ udata.id }} Name: {{ udata.name }}
-        </div>
-        <div class="container">
-            <div v-for="group in rules[0].eeaRuleConditionGroups">
-                Id : {{ group.id }}
+	<div id="app" class="container">
+		<div class="row header">
+			<div class="col-sm-3 navbarSprite">
+				<img alt="Drools logo" src="DroolsLogo200px.png">
+			</div>
+			<div class="col-sm-9">
+					<h1>Drools Fools</h1>
+			</div>
+		</div>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">Drools Fools</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li><a href="index.html">Home</a></li>
+              <li class="active"><a href="rule-admin.html">Rule admin page</a></li>
+            </ul>
+          </div>
+        </nav>
 
-                <div v-for="condition in group.eeaRuleConditions">
-                    <div class="container">
-                        <div class="col-sm-3">
-                            <select v-model="testVal">
-                                <option v-for="item in conditionOptions" :value="condition.option.optionName"
-                                        :selected="item == condition.option.optionName">{{item}}</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2">
-                            <select v-model="testVal">
-                                <option v-for="item in operators" :value="condition.ruleOperator" >{{item}}</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-7">
-                            <input type="text" v-model="condition.value" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-for="action in rules[0].eeaRuleActions">
-                <div class="container">
-                    <div class="col-sm-3"> {{ action.ruleActionType }} </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <button class="btn btn-primary" v-on:click="triggerRules">Add rules</button>
-</div>
-</div>
-<script>
+			<div class="panel panel-default">
+				<div class="panel-heading">Rule list</div>
+				<div class="panel-body">
+					<div v-for="udata in rules" class="rule-list-element">
+						<div class="col-sm-2">#{{ udata.id }}</div>
+						<div class="col-sm-4">{{ udata.name }}</div>
+						<div class="col-sm-2">Enabled: {{ udata.enabled }}</div>
+						<div class="col-sm-4">
+							<button class="btn btn-primary  btn-sm" type="button" @click="loadRule(udata.id, $event)" >Edit</button>
+						</div>
+					</div>
+					<button class="btn btn-primary  btn-sm" type="button" @click="addNewRule( $event)" >Add new rule</button>
+				</div>
+				<div class="panel panel-default" v-if="seen">
+					<div class="panel-heading">Current rule
+
+						<button class="btn btn-success btn-sm pull-right" type="button" @click="saveCurrentRule(currentRule, $event)" >Save</button>
+					</div>
+					<div class="panel-body">
+						<div class="panel-body">
+							<div class="col-sm-4">Rule name:</div>
+							<div class="col-sm-8">
+								<input class="form-control" type="text" v-model="currentRule.name" />
+							</div>
+							<div class="col-sm-4">Enabled:</div>
+							<div class="col-sm-8">
+								<input type="checkbox"  v-model="currentRule.enabled">
+								</div>
+							</div>
+							<div class="w100 panel panel-default">
+								<div class="panel-heading">Condition group(s)</div>
+								<div class="panel-body">
+									<div v-for="group in currentRule.eeaRuleConditionGroups" class="condition-group  ">
+										<div class="panel panel-default">
+											<div class="panel-heading">Condition(s) 
+                                        
+												<button class="btn btn-warning btn-sm pull-right" type="button" @click="removeConditionGroup(group, $event)" >Remove</button>
+											</div>
+											<div class="panel-body">
+												<div v-for="condition in group.eeaRuleConditions" class="condition">
+													<div class="">
+														<div class="col-sm-3">
+															<select class="form-control" v-model="condition.option.optionName">
+																<option v-for="item in conditionOptions" :value="condition.option.optionName"
+                            :selected="item == condition.option.optionName">{{item}}</option>
+															</select>
+														</div>
+														<div class="col-sm-2">
+															<select class="form-control" v-model="condition.ruleOperator">
+																<option v-for="item in operators" :value="condition.ruleOperator" >{{item}}</option>
+															</select>
+														</div>
+														<div class="col-sm-5">
+															<input class="form-control" type="text" v-model="condition.value" />
+														</div>
+														<div class="col-sm-2">
+															<button class="btn btn-warning  btn-sm" type="button" @click="removeCondition(condition, $event)" >Remove</button>
+														</div>
+													</div>
+												</div>
+												<div class="">
+													<button class="form-control" type="button" @click="addCondition(group, $event)" >Add new condition</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="">
+										<button class="form-control" type="button" @click="addConditionGroup(currentRule, $event)" >Add new condition group</button>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">Action(s)</div>
+								<div class="panel-body">
+									<div v-for="action in currentRule.eeaRuleActions" class="rule-action ">
+										<div class="col-sm-3">
+											<select class="form-control" v-model="action.ruleActionType">
+												<option v-for="item in actionTypes" :value="action.ruleActionType"
+                            :selected="item === action.ruleActionType">{{item}}</option>
+											</select>
+										</div>
+										<div class="col-sm-7">
+											<input class="form-control" type="text" v-model="action.value" />
+										</div>
+										<div class="col-sm-2">
+											<button class="btn btn-warning" type="button" @click="removeAction(action, $event)">Remove</button>
+										</div>
+									</div>
+									<div class="col-sm-2">
+										<button class="form-control" type="button" @click="addAction(currentRule, $event)">Add new action</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<script>
 
 var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
 
         var app = new Vue({
             el: '#app',
             data: {
+                seen: false,
+                ruleListFields: ["id","name","enabled"],
                 conditionOptions: ["ERROR_CODE","VALUE"],
                 operators : ["=","<",">","<=",">=", "REGEXP"],
                 actionTypes : ["POPULATE_DEFAULT_VALUES","POPULATE_RESULT_EVENT_TYPE", "POPULATE_MESSAGE",
                                 "POPULATE_RESULT_EVENT_TYPE"],
-                rules: [{"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"GENERATE_EVENT"}]}] // initialize empty array
+currentRule: {},
+                rules: [],
+//{"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"POPULATE_MESSAGE","value":"Message"}]},
+//{"id":2,"name":"Test rule2","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"POPULATE_MESSAGE","value":"Message"}]}] // initialize empty array
               },
               mounted() { // when the Vue app is booted up, this is run automatically.
                 var self = this; // create a closure to access component in the callback below
-                //$.getJSON(dataURL, function(data) {
-                //  self.rules = data;
-                //});
-                //this.rules[0] = {"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"GENERATE_EVENT"}]};
+                   $.getJSON(dataURL, function(data) {
+                  self.rules = data;
+                });
+                
               },
             methods: {
 
@@ -167,19 +174,72 @@ var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
                             this.loading = false;
                         });
                 },
-                 isNumber: function(evt) {
+                saveCurrentRule: function() {
+                    this.loading = true;
+                    var url = window.location.origin;
+                    axios.post(url + '/api/eea-rules/DEFAULT/update-rule', this.currentRule)
+                        .then(response => {
+                            this.myres = response.data;
+                            this.loading = false;
+                            console.log(this.myres);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.loading = false;
+                        });
+                },
+                isNumber: function(evt) {
                   evt = (evt) ? evt : window.event;
                   var charCode = (evt.which) ? evt.which : evt.keyCode;
                   if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-                    evt.preventDefault();;
+                    evt.preventDefault();
                   } else {
                     return true;
                   }
+                },
+                addConditionGroup: function(currentRule, event) {
+                    this.currentRule.eeaRuleConditionGroups.push({"id":0, eeaRuleConditions: []});
+                },
+                addCondition: function(currentConditionGroup, event) {
+                    currentConditionGroup.eeaRuleConditions.push({"id":0,"option":{"optionName":""},"ruleOperator":"","value":""});
+                },
+                addAction: function(currentRule, event) {
+                    currentRule.eeaRuleActions.push({"id":0,"ruleActionType":"","value":""});
+                },
+                removeConditionGroup: function(currentConditionGroup, event) {
+                    this.currentRule.eeaRuleConditionGroups = _.filter(this.currentRule.eeaRuleConditionGroups, function(cg) {
+                        return _.isEqual(currentConditionGroup, cg) === false;
+                    });
+                },
+                removeCondition: function(currentCondition, event) {
+                    _.forEach(this.currentRule.eeaRuleConditionGroups, function(condGroup){
+                        condGroup.eeaRuleConditions = _.filter(condGroup.eeaRuleConditions, function(co) {
+                            return _.isEqual(currentCondition, co) === false;
+                        });
+                    });
+                },
+                removeAction: function(currentAction, event) {
+                    this.currentRule.eeaRuleActions = _.filter(this.currentRule.eeaRuleActions, function(co) {
+                        return _.isEqual(currentAction, co) === false;
+                    });
+                },
+                loadRule: function(id, event) {
+                    var r = _.find(this.rules, {id:id});
+                    this.currentRule = r;
+                    this.seen = true;
+                },
+                addNewRule: function(id, event) {
+                  this.currentRule = {"id":0,"name":"","enabled":true,"eeaRuleConditionGroups":[{"id":0,"eeaRuleConditions":[]}],"eeaRuleActions":[]};
+                  this.seen = true;
                 }
             }
 
         })
 
-				</script>
-</body>
-</html>
+				
+							
+					
+				
+							</script>
+						</body>
+					</html>
