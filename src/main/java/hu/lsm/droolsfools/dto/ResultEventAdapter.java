@@ -10,6 +10,7 @@ public class ResultEventAdapter {
 
     public ResultEventAdapter(ResultEvent resultEvent){
         this.resultEvent = resultEvent;
+        this.resultEvent.setTimestamp(System.currentTimeMillis());
     }
 
     public void populateResultEventType(String eventTypeStr){

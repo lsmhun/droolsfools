@@ -41,15 +41,15 @@
 This is a just a Drools example. Basic example:
 
 					<a href="https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol">teapot</a> rule.
-If error code is 418 and time is afternoon. You can change the rules on
+If error code is 418 and message is 'tea'. You can change the rules on
 
 					<a href="rule-admin.html">rule admin</a> page.
 
 					<ul>
-						<li>when ERROR_code=200 then response='OK' </li>
-						<li>when ERROR_code=418 AND message='tea' then response.message='Tea time'</li>
-						<li>when ERROR_code=404 then response.message='Not found'</li>
-						<li>Any other case it will respond UNKNOW</li>
+						<li @click="add200">when ERROR_code=200 then result.message='OK' </li>
+						<li @click="add418">when ERROR_code=418 AND message='tea' then result.message='Tea time'</li>
+						<li @click="add404">when ERROR_code=404 then result.message='Not found'</li>
+						<li>Any other case rule won't run, and basic message will be UNKNOW</li>
 					</ul>
 				</div>
 				<div class="panel panel-default">
@@ -64,15 +64,16 @@ If error code is 418 and time is afternoon. You can change the rules on
 							<input class="col-md-2" v-model="value" />
 						</div>
 						<div class="container-fluid my-form-padding">
-							<button class="btn btn-primary" v-on:click="triggerRules">Trigger rules</button>
+							<button class="btn btn-primary" @click="triggerRules">Trigger rules</button>
 						</div>
 					</div>
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading">Result</div>
 					<div class="panel-body">
-						<span v-if="loading" style="font-size: 16px;">Please Wait ...</span>
-						<span v-if="myres == -1.0">?</span>
+						<div v-for="re in resultEvents">
+							{{ re.timestamp }} - {{ re.message }}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -85,19 +86,38 @@ If error code is 418 and time is afternoon. You can change the rules on
                 return {
                     info: null,
                     myres: -1.0,
-                    comment: null,
+                    resultEvents: [],
                     errorCode: 200,
                     value: 'OK',
                     loading: false
                 }
             },
+            mounted() {
+			  window.setInterval(()=>{
+			      this.loading = true;
+                    var url = window.location.origin;
+                    axios.get(url + '/api/result-event/get-result-events')
+                        .then(response => {
+                            this.resultEvents = response.data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            this.loading = false;
+                        });
+			  }, 2000)
+			},
             methods: {
-
-                addPositiveText: function() {
-                    this.comment = 'The movie was cool. The animation and the graphics were out of this world. I would recommend this movie.';
+				add200: function(){
+					this.errorCode = 200;
+					this.value = 'anything can be here';
+				},
+                add418: function() {
+                	this.errorCode = 418;
+					this.value = 'tea';
                 },
-                addNegativeText: function() {
-                    this.comment = 'This film is shit. Bad actors, terrible story, visually nothing. I lost two hours from my life.';
+                add404: function() {
+                	this.errorCode = 404;
+					this.value = 'GET my-little-homepage.html';
                 },
                 triggerRules: function() {
                     this.loading = true;

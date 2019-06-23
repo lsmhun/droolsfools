@@ -33,7 +33,7 @@ public class EEARuleConverter implements RuleToDroolsConverter {
         String ruleCond = "";
         ruleCond += " incomingData." + eeaRuleCondition.getOption().getOptionName() + " ";
         ruleCond += eeaRuleCondition.getRuleOperator().getOperator() + " ";
-        ruleCond += eeaRuleCondition.getValue();
+        ruleCond += "\"" + eeaRuleCondition.getValue() +"\" ";
         return ruleCond;
     }
 

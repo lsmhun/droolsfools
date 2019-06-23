@@ -19,7 +19,7 @@ public class TestUtil {
             "      dialect \"mvel\"\n" +
             "  when\n" +
             "    ida : IncomingDataAdapter(\n" +
-            "             incomingData.errorCode == 200             )\n" +
+            "             incomingData.errorCode == \"200\"              )\n" +
             "  then\n" +
             "    System.out.println( ida );\n" +
             "    // \n" +

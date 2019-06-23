@@ -21,7 +21,9 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     private final Logger LOG = LoggerFactory.getLogger(DemoRuleRepositoryImpl.class);
 
     private final static String[] DEMO_RULES = {
-        "{\"id\":1,\"name\":\"Test rule\",\"enabled\":true,\"priority\":100,\"eeaRuleConditionGroups\":[{\"id\":1,\"eeaRuleConditions\":[{\"id\":1,\"option\":{\"optionName\":\"errorCode\"},\"ruleOperator\":\"EQUAL\",\"value\":\"200\"}]}],\"eeaRuleActions\":[{\"id\":1,\"ruleActionType\":\"POPULATE_MESSAGE\",\"value\":\"Message\"}]}"
+            "{\"id\":1,\"name\":\"Rule 200\",\"enabled\":true,\"priority\":100,\"eeaRuleConditionGroups\":[{\"id\":1,\"eeaRuleConditions\":[{\"id\":1,\"option\":{\"optionName\":\"errorCode\"},\"ruleOperator\":\"EQUAL\",\"value\":\"200\"}]}],\"eeaRuleActions\":[{\"id\":1,\"ruleActionType\":\"POPULATE_MESSAGE\",\"value\":\"OK\"}]}",
+            "{\"id\":2,\"name\":\"Rule 418\",\"enabled\":true,\"priority\":100,\"eeaRuleConditionGroups\":[{\"id\":2,\"eeaRuleConditions\":[{\"id\":2,\"option\":{\"optionName\":\"errorCode\"},\"ruleOperator\":\"EQUAL\",\"value\":\"418\"},{\"id\":3,\"option\":{\"optionName\":\"value\"},\"ruleOperator\":\"EQUAL\",\"value\":\"tea\"}]}],\"eeaRuleActions\":[{\"id\":2,\"ruleActionType\":\"POPULATE_MESSAGE\",\"value\":\"Tea time\"}]}",
+            "{\"id\":3,\"name\":\"Rule 404\",\"enabled\":true,\"priority\":100,\"eeaRuleConditionGroups\":[{\"id\":3,\"eeaRuleConditions\":[{\"id\":4,\"option\":{\"optionName\":\"errorCode\"},\"ruleOperator\":\"EQUAL\",\"value\":\"404\"}]}],\"eeaRuleActions\":[{\"id\":1,\"ruleActionType\":\"POPULATE_MESSAGE\",\"value\":\"NOT FOUND\"}]}"
     };
 
     private List<EEARule> eeaRuleList = new ArrayList<>();

@@ -17,6 +17,8 @@ public class ResultEvent {
     private int point;
     private int errorCode;
 
+    private long timestamp;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     public enum ResultEventType{
         NOTIFICATION, UNKNOWN
