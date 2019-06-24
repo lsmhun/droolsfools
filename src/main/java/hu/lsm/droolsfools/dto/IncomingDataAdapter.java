@@ -18,6 +18,9 @@ public class IncomingDataAdapter {
     @Getter @Setter
     private RuleActionService ruleActionService;
 
+    @Getter @Setter
+    private boolean conditionMatched;
+
     public IncomingDataAdapter(IncomingData incomingData){
         this.incomingData = incomingData;
         resultEventAdapter = new ResultEventAdapter(new ResultEvent());

@@ -76,13 +76,14 @@
 													<div class="">
 														<div class="col-sm-3">
 															<select class="form-control" v-model="condition.option.optionName">
-																<option v-for="item in conditionOptions" :value="condition.option.optionName"
+																<option v-for="item in conditionOptions"  v-bind:value="item" 
                             :selected="item == condition.option.optionName">{{item}}</option>
 															</select>
 														</div>
 														<div class="col-sm-2">
 															<select class="form-control" v-model="condition.ruleOperator">
-																<option v-for="item in operators" :value="condition.ruleOperator" >{{item}}</option>
+																<option v-for="item in operators" v-bind:value="item.value"  
+                                                                        :selected="item.value == condition.ruleOperator">{{item.label}}</option>
 															</select>
 														</div>
 														<div class="col-sm-5">
@@ -110,7 +111,7 @@
 									<div v-for="action in currentRule.eeaRuleActions" class="rule-action ">
 										<div class="col-sm-3">
 											<select class="form-control" v-model="action.ruleActionType">
-												<option v-for="item in actionTypes" :value="action.ruleActionType"
+												<option v-for="item in actionTypes" v-bind:value="item"
                             :selected="item === action.ruleActionType">{{item}}</option>
 											</select>
 										</div>
@@ -128,52 +129,40 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<script>
-
-var dataURL = 'http://127.0.0.1:8080/api/eea-rules/DEFAULT/get-rules';
+</div>
+<script>
 
         var app = new Vue({
             el: '#app',
             data: {
                 seen: false,
                 ruleListFields: ["id","name","enabled"],
-                conditionOptions: ["ERROR_CODE","VALUE"],
-                operators : ["=","<",">","<=",">=", "REGEXP"],
+                conditionOptions: ["errorCode","value"],
+                operators : [{"label": "=", "value":"EQUAL"}, {"label": "!=", "value":"NOT_EQUAL"},
+                             {"label": "<", "value":"LT"},
+                             {"label": ">", "value":"GT"},
+                             {"label": "<=", "value":"LEQ"},
+                             {"label": ">=", "value":"GEQ"}],
                 actionTypes : ["POPULATE_DEFAULT_VALUES","POPULATE_RESULT_EVENT_TYPE", "POPULATE_MESSAGE",
                                 "POPULATE_RESULT_EVENT_TYPE"],
 currentRule: {},
                 rules: [],
-//{"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"POPULATE_MESSAGE","value":"Message"}]},
+//[{"id":1,"name":"Test rule","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"LEQ","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"POPULATE_MESSAGE","value":"Message"}]},
 //{"id":2,"name":"Test rule2","enabled":true,"eeaRuleConditionGroups":[{"id":1,"eeaRuleConditions":[{"id":1,"option":{"optionName":"ERROR_CODE"},"ruleOperator":"EQUAL","value":"200"}]}],"eeaRuleActions":[{"id":1,"ruleActionType":"POPULATE_MESSAGE","value":"Message"}]}] // initialize empty array
               },
-              mounted() { // when the Vue app is booted up, this is run automatically.
-                var self = this; // create a closure to access component in the callback below
-                   $.getJSON(dataURL, function(data) {
-                  self.rules = data;
-                });
-                
-              },
-            methods: {
-
-
-                triggerRules: function() {
-                    this.loading = true;
+              mounted() { 
                     var url = window.location.origin;
-                    axios.post(url + '/api/trigger_rules/DEFAULT', {
-                            errorCode: this.errorCode,
-                            value: this.value
-                        })
+                    axios.get(url + '/api/eea-rules/DEFAULT/get-rules')
                         .then(response => {
-                            this.myres = response.data;
-                            this.loading = false;
-                            console.log(this.myres);
+                            this.rules = response.data;
                         })
                         .catch(error => {
                             console.log(error);
                             this.loading = false;
                         });
-                },
+                
+              },
+            methods: {
                 saveCurrentRule: function() {
                     this.loading = true;
                     var url = window.location.origin;
