@@ -8,5 +8,6 @@ public interface ResultEventRepository
         //extends CrudRepository<ResultEvent, Long>
 {
     List<ResultEvent> findAll();
+
     void addResultEvent(ResultEvent resultEvent);
 }

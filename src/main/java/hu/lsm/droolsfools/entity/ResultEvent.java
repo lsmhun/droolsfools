@@ -20,7 +20,7 @@ public class ResultEvent {
     private long timestamp;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    public enum ResultEventType{
+    public enum ResultEventType {
         NOTIFICATION, UNKNOWN
     }
 }

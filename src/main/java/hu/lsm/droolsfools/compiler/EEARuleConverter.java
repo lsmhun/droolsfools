@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class EEARuleConverter implements RuleToDroolsConverter {
 
-    private final static String TEMPLATE =
+    private static final String TEMPLATE =
             "import hu.lsm.droolsfools.dto.IncomingDataAdapter;\n" +
                     "import hu.lsm.droolsfools.dto.ResultEventAdapter;\n" +
                     "import hu.lsm.droolsfools.entity.ResultEvent;\n" +
@@ -29,34 +29,34 @@ public class EEARuleConverter implements RuleToDroolsConverter {
                     "    %s\n" +
                     "end";
 
-    private String generateCondition(EEARuleCondition eeaRuleCondition){
+    private String generateCondition(EEARuleCondition eeaRuleCondition) {
         String ruleCond = "";
         ruleCond += " incomingData." + eeaRuleCondition.getOption().getOptionName() + " ";
         ruleCond += eeaRuleCondition.getRuleOperator().getOperator() + " ";
-        ruleCond += "\"" + eeaRuleCondition.getValue() +"\" ";
+        ruleCond += "\"" + eeaRuleCondition.getValue() + "\" ";
         return ruleCond;
     }
 
-    private String generateConditionGroup(EEARuleConditionGroup eeaRuleConditionGroup){
+    private String generateConditionGroup(EEARuleConditionGroup eeaRuleConditionGroup) {
         String whenBlock = "";
         List<String> conditions = new ArrayList<>(eeaRuleConditionGroup.getEeaRuleConditions().size());
-        for(EEARuleCondition eeaRuleCondition : eeaRuleConditionGroup.getEeaRuleConditions()){
+        for (EEARuleCondition eeaRuleCondition : eeaRuleConditionGroup.getEeaRuleConditions()) {
             conditions.add(generateCondition(eeaRuleCondition));
         }
-        whenBlock += String.join( " && ", conditions);
+        whenBlock += String.join(" && ", conditions);
         return whenBlock;
     }
 
-    private String generateWhenBlock(EEARule eeaRule){
+    private String generateWhenBlock(EEARule eeaRule) {
         List<String> conditionGroups = new ArrayList<>(eeaRule.getEeaRuleConditionGroups().size());
-        for(EEARuleConditionGroup eeaRuleConditionGroup : eeaRule.getEeaRuleConditionGroups()){
+        for (EEARuleConditionGroup eeaRuleConditionGroup : eeaRule.getEeaRuleConditionGroups()) {
             conditionGroups.add(generateConditionGroup(eeaRuleConditionGroup));
         }
         String whenBlock = String.join(" || ", conditionGroups);
         return whenBlock;
     }
 
-    private String generateRuleAction(EEARuleAction eeaRuleAction){
+    private String generateRuleAction(EEARuleAction eeaRuleAction) {
         String ruleAction = "";
         switch (eeaRuleAction.getRuleActionType()) {
             case POPULATE_DEFAULT_VALUES:
@@ -73,10 +73,10 @@ public class EEARuleConverter implements RuleToDroolsConverter {
         return ruleAction;
     }
 
-    private String generateActionGroup(EEARule eeaRule){
+    private String generateActionGroup(EEARule eeaRule) {
         String actionBlock = "ResultEventAdapter rea = ida.getResultEventAdapter();\n";
         List<String> actions = new ArrayList<>(eeaRule.getEeaRuleActions().size());
-        for(EEARuleAction eeaRuleAction : eeaRule.getEeaRuleActions()){
+        for (EEARuleAction eeaRuleAction : eeaRule.getEeaRuleActions()) {
             actions.add(generateRuleAction(eeaRuleAction));
         }
         actionBlock += String.join(" ;\n ", actions);

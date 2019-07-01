@@ -13,16 +13,15 @@ public class EEARuleAction implements Serializable {
     private String value;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    public enum RuleActionType{
+    public enum RuleActionType {
         POPULATE_DEFAULT_VALUES("POPULATE_DEFAULT_VALUES"),
         POPULATE_RESULT_EVENT_TYPE("POPULATE_RESULT_EVENT_TYPE"),
         POPULATE_MESSAGE("POPULATE_MESSAGE"),
-        POPULATE_POINT("POPULATE_RESULT_EVENT_TYPE")
-        ;
+        POPULATE_POINT("POPULATE_RESULT_EVENT_TYPE");
 
         private String actionType;
 
-        RuleActionType(String actionType){
+        RuleActionType(String actionType) {
             this.actionType = actionType;
         }
     }

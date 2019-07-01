@@ -32,10 +32,10 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     @PostConstruct
     private void init() {
         ObjectMapper objectMapper = new ObjectMapper();
-        for(String json: DEMO_RULES){
+        for (String json : DEMO_RULES) {
             try {
                 eeaRuleList.add(objectMapper.readValue(json, EEARule.class));
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 LOG.error("Rule is not valid", ex);
             }
         }
@@ -50,9 +50,9 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     @Override
     public List<EEARule> findByRepositoryId(String repositoryId, boolean enabled) {
         List<EEARule> retVal;
-        if(enabled){
+        if (enabled) {
             retVal = eeaRuleList.stream().filter(EEARule::isEnabled).collect(Collectors.toList());
-        }else{
+        } else {
             retVal = eeaRuleList;
         }
         return retVal;
@@ -60,28 +60,29 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
 
     /**
      * JPA can handle that better, but for demo, it is enough
+     *
      * @param eeaRule
      */
-    private void generateIdForEEARule(EEARule eeaRule){
-        if(eeaRule.getId() == null || eeaRule.getId().compareTo(0L) == 0){
+    private void generateIdForEEARule(EEARule eeaRule) {
+        if (eeaRule.getId() == null || eeaRule.getId().compareTo(0L) == 0) {
             eeaRule.setId(System.currentTimeMillis());
         }
-        if(eeaRule.getEeaRuleConditionGroups() != null){
+        if (eeaRule.getEeaRuleConditionGroups() != null) {
 
-            for(EEARuleConditionGroup group: eeaRule.getEeaRuleConditionGroups()){
-                if(group.getId() == null || group.getId().compareTo(0L) == 0){
+            for (EEARuleConditionGroup group : eeaRule.getEeaRuleConditionGroups()) {
+                if (group.getId() == null || group.getId().compareTo(0L) == 0) {
                     group.setId(System.currentTimeMillis());
                 }
-                for(EEARuleCondition cond: group.getEeaRuleConditions()){
-                    if(cond.getId() == null || cond.getId().compareTo(0L) == 0){
+                for (EEARuleCondition cond : group.getEeaRuleConditions()) {
+                    if (cond.getId() == null || cond.getId().compareTo(0L) == 0) {
                         cond.setId(System.currentTimeMillis());
                     }
                 }
             }
         }
-        if(eeaRule.getEeaRuleActions() != null){
-            for(EEARuleAction action: eeaRule.getEeaRuleActions()){
-                if(action.getId() == null || action.getId().compareTo(0L) == 0){
+        if (eeaRule.getEeaRuleActions() != null) {
+            for (EEARuleAction action : eeaRule.getEeaRuleActions()) {
+                if (action.getId() == null || action.getId().compareTo(0L) == 0) {
                     action.setId(System.currentTimeMillis());
                 }
             }
@@ -91,11 +92,11 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
 
     @Override
     public void saveOrUpdate(EEARule eeaRule) {
-        if(eeaRule == null){
+        if (eeaRule == null) {
             LOG.error("Unable to save null value");
             return;
         }
-        eeaRuleList =  eeaRuleList.stream().filter(k -> !k.getId().equals(eeaRule.getId())).collect(Collectors.toList());
+        eeaRuleList = eeaRuleList.stream().filter(k -> !k.getId().equals(eeaRule.getId())).collect(Collectors.toList());
         generateIdForEEARule(eeaRule);
         eeaRuleList.add(eeaRule);
     }

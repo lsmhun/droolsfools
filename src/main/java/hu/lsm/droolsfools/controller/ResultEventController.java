@@ -17,7 +17,7 @@ public class ResultEventController {
 
     @GetMapping("/api/result-event/get-result-events")
     @ResponseBody
-    public List<ResultEvent> getEEARuleList(){
+    public List<ResultEvent> getEEARuleList() {
         return resultEventRepository.findAll();
     }
 

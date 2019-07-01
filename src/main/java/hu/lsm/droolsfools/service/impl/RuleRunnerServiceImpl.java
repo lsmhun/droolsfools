@@ -20,7 +20,7 @@ public class RuleRunnerServiceImpl implements RuleRunnerService {
     private final RuleActionService ruleActionService;
 
     @Autowired
-    public RuleRunnerServiceImpl(final KieSessionInventory kieSessionInventory, RuleActionService ruleActionService){
+    public RuleRunnerServiceImpl(final KieSessionInventory kieSessionInventory, RuleActionService ruleActionService) {
         this.kieSessionInventory = kieSessionInventory;
         this.ruleActionService = ruleActionService;
     }

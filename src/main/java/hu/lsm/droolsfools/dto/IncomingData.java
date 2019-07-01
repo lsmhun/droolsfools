@@ -8,7 +8,9 @@ import java.io.Serializable;
 @Data
 @ToString
 public class IncomingData implements Serializable {
+
     private int errorCode;
 
     private String value;
+
 }

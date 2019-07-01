@@ -10,6 +10,7 @@ public interface RuleRepository
         //extends CrudRepository<EEARule, Long>
 {
     EEARule findById(Long id);
+
     List<EEARule> findByRepositoryId(String repositoryId, boolean enabled);
 
     void saveOrUpdate(EEARule eeaRule);

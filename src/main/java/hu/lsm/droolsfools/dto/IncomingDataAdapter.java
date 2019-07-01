@@ -15,17 +15,18 @@ public class IncomingDataAdapter {
     @Getter
     private ResultEventAdapter resultEventAdapter;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private RuleActionService ruleActionService;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean conditionMatched;
 
-    public IncomingDataAdapter(IncomingData incomingData){
+    public IncomingDataAdapter(IncomingData incomingData) {
         this.incomingData = incomingData;
         resultEventAdapter = new ResultEventAdapter(new ResultEvent());
     }
-
 
 
 }

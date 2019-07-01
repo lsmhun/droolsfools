@@ -10,6 +10,7 @@ import java.util.List;
  */
 @Data
 public class EEARuleConditionGroup implements Serializable {
+
     private Long id;
 
     private List<EEARuleCondition> eeaRuleConditions;

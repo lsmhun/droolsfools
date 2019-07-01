@@ -22,7 +22,7 @@ public class EEARuleCondition implements Serializable {
         @Getter
         private String operator;
 
-        RuleOperator(String operator){
+        RuleOperator(String operator) {
             this.operator = operator;
         }
 

@@ -26,24 +26,25 @@ public class EEARuleController {
 
     @GetMapping("/api/eea-rules/{repositoryId}/get-rules")
     @ResponseBody
-    public List<EEARule> getEEARuleList(@PathVariable(name="repositoryId") String repositoryId){
+    public List<EEARule> getEEARuleList(@PathVariable(name = "repositoryId") String repositoryId) {
         boolean notAllEnabledRules = false;
         return ruleRepository.findByRepositoryId(RuleRunnerService.DEFAULT_REPO, notAllEnabledRules);
     }
 
     @GetMapping("/api/eea-rules/{repositoryId}/get-rule-by-id/{ruleId}")
     @ResponseBody
-    public EEARule getEEARuleById(@PathVariable(name="repositoryId") String repositoryId,
-                                        @PathVariable(name="ruleId") Long ruleId){
+    public EEARule getEEARuleById(@PathVariable(name = "repositoryId") String repositoryId,
+                                  @PathVariable(name = "ruleId") Long ruleId) {
         return ruleRepository.findById(ruleId);
     }
 
     @PostMapping(path = "/api/eea-rules/{repositoryId}/update-rule",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void updateEEARule(
-            @PathVariable(name="repositoryId") String repositoryId,
-            @RequestBody EEARule eeaRule){
+            @PathVariable(name = "repositoryId") String repositoryId,
+            @RequestBody EEARule eeaRule) {
         ruleRepository.saveOrUpdate(eeaRule);
         kieSessionInventory.resetKieSession(repositoryId);
     }
+
 }

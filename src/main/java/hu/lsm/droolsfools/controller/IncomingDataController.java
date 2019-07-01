@@ -18,8 +18,8 @@ public class IncomingDataController {
     @PostMapping(path = "/api/trigger_rules/{repositoryId}",
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void triggerRules(
-            @PathVariable(name="repositoryId") String repositoryId,
-            @RequestBody IncomingData incomingData){
+            @PathVariable(name = "repositoryId") String repositoryId,
+            @RequestBody IncomingData incomingData) {
         ruleRunnerService.runRules(repositoryId, incomingData);
     }
 

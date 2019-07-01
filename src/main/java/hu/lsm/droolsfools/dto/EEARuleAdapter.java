@@ -6,7 +6,7 @@ public class EEARuleAdapter {
 
     private EEARule eeaRule;
 
-    public EEARuleAdapter(EEARule rule){
+    public EEARuleAdapter(EEARule rule) {
         this.eeaRule = rule;
     }
 

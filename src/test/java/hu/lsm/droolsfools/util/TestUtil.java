@@ -28,7 +28,7 @@ public class TestUtil {
             "\n" +
             "end";
 
-    public static EEARuleCondition getEEARuleCondition(){
+    public static EEARuleCondition getEEARuleCondition() {
         EEARuleCondition eeaRuleCondition = new EEARuleCondition();
         eeaRuleCondition.setId(1L);
         RuleConditionOption ruleConditionOption = new RuleConditionOption();
@@ -38,14 +38,15 @@ public class TestUtil {
         eeaRuleCondition.setValue("200");
         return eeaRuleCondition;
     }
-    public static EEARuleConditionGroup getEEARuleConditionGroup(){
+
+    public static EEARuleConditionGroup getEEARuleConditionGroup() {
         EEARuleConditionGroup eeaRuleConditionGroup = new EEARuleConditionGroup();
         eeaRuleConditionGroup.setId(1L);
         eeaRuleConditionGroup.setEeaRuleConditions(Collections.singletonList(getEEARuleCondition()));
         return eeaRuleConditionGroup;
     }
 
-    public static EEARuleAction getEEARuleAction(){
+    public static EEARuleAction getEEARuleAction() {
         EEARuleAction eeaRuleAction = new EEARuleAction();
         eeaRuleAction.setId(1L);
         eeaRuleAction.setRuleActionType(EEARuleAction.RuleActionType.POPULATE_MESSAGE);
@@ -53,7 +54,7 @@ public class TestUtil {
         return eeaRuleAction;
     }
 
-    public static EEARule getEEARule(){
+    public static EEARule getEEARule() {
         EEARule eeaRule = new EEARule();
         eeaRule.setId(1L);
         eeaRule.setName("Test rule");

@@ -52,7 +52,6 @@ public class RuleRunnerServiceImplTest {
         incomingData.setErrorCode(200);
         ruleRunnerService.runRules(RuleRunnerService.DEFAULT_REPO, incomingData);
         verify(ruleActionService, times(1)).processResultEvent(any(ResultEvent.class));
-        //assertNotEquals("OK", incomingData.getMessage());
     }
 
     @Ignore

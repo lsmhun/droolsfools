@@ -30,7 +30,7 @@ public class KieSessionInventoryImplTest {
     private KieSessionInventoryImpl kieSessionInventory;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         List<EEARule> ruleList = Collections.singletonList(TestUtil.getEEARule());
         when(ruleRepository.findByRepositoryId(anyString(), anyBoolean())).thenReturn(ruleList);
         when(eeaRuleConverter.convertRule(any(EEARule.class))).thenReturn(TestUtil.RESULT_RULE_TEXT);

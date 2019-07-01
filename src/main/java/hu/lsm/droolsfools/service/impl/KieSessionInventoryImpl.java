@@ -42,7 +42,7 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
 
     @Autowired
     public KieSessionInventoryImpl(final RuleRepository ruleRepository,
-                                   final EEARuleConverter eeaRuleConverter){
+                                   final EEARuleConverter eeaRuleConverter) {
         this.ruleRepository = ruleRepository;
         this.eeaRuleConverter = eeaRuleConverter;
     }
@@ -53,9 +53,9 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
     }
 
     @Override
-    public KieSession getKieSession(String repositoryId){
+    public KieSession getKieSession(String repositoryId) {
         KieSession kieSession = kieSessionMap.get(repositoryId);
-        if( kieSession == null){
+        if (kieSession == null) {
             kieSession = initKieSession(repositoryId);
             kieSessionMap.put(repositoryId, kieSession);
         }
@@ -68,19 +68,19 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
         initKieSession(repositoryId);
     }
 
-    private List<EEARule> getActiveRules(String repositoryId){
+    private List<EEARule> getActiveRules(String repositoryId) {
         return ruleRepository.findByRepositoryId(repositoryId, true);
     }
 
 
-    private KieFileSystem addRules(String repositoryId){
+    private KieFileSystem addRules(String repositoryId) {
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
 
 
-        for(EEARule eeaRule: getActiveRules(repositoryId)){
+        for (EEARule eeaRule : getActiveRules(repositoryId)) {
             String ruleText = eeaRuleConverter.convertRule(eeaRule);
             String ruleName = eeaRule.getName().trim().replaceAll("\\w", "");
-            if(LOG.isDebugEnabled()){
+            if (LOG.isDebugEnabled()) {
                 LOG.debug(ruleName + " : " + ruleText);
             }
             //
@@ -97,7 +97,7 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
         return kieFileSystem;
     }
 
-    private void addLoggingListeners(KieSession kieSession){
+    private void addLoggingListeners(KieSession kieSession) {
         // Set up listeners.
         kieSession.addEventListener(new DebugAgendaEventListener());
         kieSession.addEventListener(new DebugRuleRuntimeEventListener());
@@ -112,7 +112,7 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
 
     private KieSession initKieSession(String repositoryId) {
 
-        if(kieServices == null){
+        if (kieServices == null) {
             init();
         }
         addRules(repositoryId);
