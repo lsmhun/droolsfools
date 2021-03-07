@@ -6,6 +6,7 @@ There are an IncomingData object with errorCode and value parameters and based o
 
 ## Screenshot
 ![Drools fools screenshot 01](docs/droolsfools01.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_shield)
 
 
 ## See
@@ -33,3 +34,7 @@ $ docker run -p 8080:8080 -t lsmhun/droolsfools
 
 ```
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_large)
