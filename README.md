@@ -35,7 +35,7 @@ $ docker run -p 8080:8080 -t lsmhun/droolsfools
 
 
 ## Badges
-[![Build Status](https://www.travis-ci.com/lsmhun/droolsfools.svg?branch=main)](https://www.travis-ci.com/lsmhun/droolsfools)
+[![CircleCI](https://circleci.com/gh/lsmhun/droolsfools.svg?style=shield)](https://circleci.com/gh/lsmhun/droolsfools)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_shield)
 
 ## License
