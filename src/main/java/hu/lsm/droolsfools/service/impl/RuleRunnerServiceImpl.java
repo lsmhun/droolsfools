@@ -5,14 +5,13 @@ import hu.lsm.droolsfools.dto.IncomingDataAdapter;
 import hu.lsm.droolsfools.service.KieSessionInventory;
 import hu.lsm.droolsfools.service.RuleActionService;
 import hu.lsm.droolsfools.service.RuleRunnerService;
+import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/*
-https://github.com/eugenp/tutorials
- */
 @Service
+@Slf4j
 public class RuleRunnerServiceImpl implements RuleRunnerService {
 
     private final KieSessionInventory kieSessionInventory;
@@ -27,6 +26,7 @@ public class RuleRunnerServiceImpl implements RuleRunnerService {
 
     @Override
     public void runRules(String repositoryId, IncomingData incoming) {
+        log.debug("repositoryId=" + repositoryId + " has arrived with data: " + incoming);
         KieSession kieSession = kieSessionInventory.getKieSession(repositoryId);
         IncomingDataAdapter incomingDataAdapter = new IncomingDataAdapter(incoming);
         kieSession.insert(incomingDataAdapter);

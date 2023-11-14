@@ -5,20 +5,18 @@ import hu.lsm.droolsfools.entity.EEARule;
 import hu.lsm.droolsfools.entity.EEARuleAction;
 import hu.lsm.droolsfools.entity.EEARuleCondition;
 import hu.lsm.droolsfools.entity.EEARuleConditionGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class DemoRuleRepositoryImpl implements RuleRepository {
-
-    private final Logger LOG = LoggerFactory.getLogger(DemoRuleRepositoryImpl.class);
 
     private final static String[] DEMO_RULES = {
             "{\"id\":1,\"name\":\"Rule 200\",\"enabled\":true,\"priority\":100,\"eeaRuleConditionGroups\":[{\"id\":1,\"eeaRuleConditions\":[{\"id\":1,\"option\":{\"optionName\":\"errorCode\"},\"ruleOperator\":\"EQUAL\",\"value\":\"200\"}]}],\"eeaRuleActions\":[{\"id\":1,\"ruleActionType\":\"POPULATE_MESSAGE\",\"value\":\"OK\"}]}",
@@ -36,7 +34,7 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
             try {
                 eeaRuleList.add(objectMapper.readValue(json, EEARule.class));
             } catch (Exception ex) {
-                LOG.error("Rule is not valid", ex);
+                log.error("Rule is not valid", ex);
             }
         }
     }
@@ -44,7 +42,7 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     @Override
     public EEARule findById(Long id) {
         Optional<EEARule> eeaRule = eeaRuleList.stream().filter(k -> id.equals(k.getId())).findFirst();
-        return eeaRule.get();
+        return eeaRule.orElseThrow(() -> new RuntimeException("Id not found: " + id));
     }
 
     @Override
@@ -61,7 +59,7 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     /**
      * JPA can handle that better, but for demo, it is enough
      *
-     * @param eeaRule
+     * @param eeaRule - rule persistent representation
      */
     private void generateIdForEEARule(EEARule eeaRule) {
         if (eeaRule.getId() == null || eeaRule.getId().compareTo(0L) == 0) {
@@ -93,7 +91,7 @@ public class DemoRuleRepositoryImpl implements RuleRepository {
     @Override
     public void saveOrUpdate(EEARule eeaRule) {
         if (eeaRule == null) {
-            LOG.error("Unable to save null value");
+            log.error("Unable to save null value");
             return;
         }
         eeaRuleList = eeaRuleList.stream().filter(k -> !k.getId().equals(eeaRule.getId())).collect(Collectors.toList());

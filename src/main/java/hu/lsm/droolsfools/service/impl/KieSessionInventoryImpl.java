@@ -4,6 +4,8 @@ import hu.lsm.droolsfools.compiler.EEARuleConverter;
 import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.entity.EEARule;
 import hu.lsm.droolsfools.service.KieSessionInventory;
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
@@ -20,23 +22,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * https://github.com/kiegroup/drools/blob/master/drools-examples-api/kiefilesystem-example/src/main/java/org/drools/example/api/kiefilesystem/KieFileSystemExample.java
+ * Example code:
+ * <a href="https://github.com/kiegroup/drools/blob/master/drools-examples-api/kiefilesystem-example/src/main/java/org/drools/example/api/kiefilesystem/KieFileSystemExample.java":
+ * Drools example</a>
  */
 @Service
+@Slf4j
 public class KieSessionInventoryImpl implements KieSessionInventory {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KieSessionInventoryImpl.class);
     private final RuleRepository ruleRepository;
 
     private final EEARuleConverter eeaRuleConverter;
 
-    private Map<String, KieSession> kieSessionMap = new HashMap<>();
+    private final Map<String, KieSession> kieSessionMap = new HashMap<>();
 
     private KieServices kieServices;
 
@@ -76,13 +79,10 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
     private KieFileSystem addRules(String repositoryId) {
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
 
-
         for (EEARule eeaRule : getActiveRules(repositoryId)) {
             String ruleText = eeaRuleConverter.convertRule(eeaRule);
             String ruleName = eeaRule.getName().trim().replaceAll("\\w", "");
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(ruleName + " : " + ruleText);
-            }
+            log.debug(ruleName + " : " + ruleText);
             //
             kieFileSystem.write("src/main/resources/hu/lsm/droolsfools/rules/" + eeaRule.hashCode() + ".drl", ruleText);
         }

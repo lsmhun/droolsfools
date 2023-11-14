@@ -8,9 +8,9 @@ import hu.lsm.droolsfools.entity.ResultEvent;
 import hu.lsm.droolsfools.service.RuleActionService;
 import hu.lsm.droolsfools.service.RuleRunnerService;
 import hu.lsm.droolsfools.util.TestUtil;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Collections;
@@ -35,11 +35,11 @@ public class RuleRunnerServiceImplTest {
     @Mock
     private RuleActionService ruleActionService = mock(RuleActionServiceImpl.class);
 
-    private KieSessionInventoryImpl kieSessionInventory = new KieSessionInventoryImpl(ruleRepository, eeaRuleConverter);
+    private final KieSessionInventoryImpl kieSessionInventory = new KieSessionInventoryImpl(ruleRepository, eeaRuleConverter);
 
-    private RuleRunnerServiceImpl ruleRunnerService = new RuleRunnerServiceImpl(kieSessionInventory, ruleActionService);
+    private final RuleRunnerServiceImpl ruleRunnerService = new RuleRunnerServiceImpl(kieSessionInventory, ruleActionService);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         List<EEARule> ruleList = Collections.singletonList(TestUtil.getEEARule());
         when(ruleRepository.findByRepositoryId(anyString(), anyBoolean())).thenReturn(ruleList);
@@ -54,7 +54,7 @@ public class RuleRunnerServiceImplTest {
         verify(ruleActionService, times(1)).processResultEvent(any(ResultEvent.class));
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void ruleNotTriggered() {
         IncomingData incomingData = new IncomingData();

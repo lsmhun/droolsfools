@@ -4,15 +4,15 @@ import hu.lsm.droolsfools.compiler.EEARuleConverter;
 import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.entity.EEARule;
 import hu.lsm.droolsfools.util.TestUtil;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kie.api.runtime.KieSession;
 import org.mockito.Mock;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -29,7 +29,7 @@ public class KieSessionInventoryImplTest {
 
     private KieSessionInventoryImpl kieSessionInventory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         List<EEARule> ruleList = Collections.singletonList(TestUtil.getEEARule());
         when(ruleRepository.findByRepositoryId(anyString(), anyBoolean())).thenReturn(ruleList);

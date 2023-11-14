@@ -2,19 +2,19 @@ package hu.lsm.droolsfools.compiler;
 
 import hu.lsm.droolsfools.entity.EEARule;
 import hu.lsm.droolsfools.util.TestUtil;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EEARuleConverterTest {
 
     private EEARule eeaRule;
 
-    private EEARuleConverter eeaRuleConverter = new EEARuleConverter();
+    private final EEARuleConverter eeaRuleConverter = new EEARuleConverter();
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         eeaRule = TestUtil.getEEARule();
     }
