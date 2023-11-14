@@ -15,7 +15,6 @@
 	<description>DROOLS engine playground</description>
 
 	<properties>
-		<java.version>1.8</java.version>
 		<http-component-version>4.4.6</http-component-version>
 		<drools-version>8.44.0.Final</drools-version>
 		<apache-poi-version>5.2.4</apache-poi-version>
