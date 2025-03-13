@@ -20,14 +20,14 @@ Articles and howtos:
 Standard Spring boot application.
 
 ```bash
-$ ./mvnw spring-boot:run
+$ mvn spring-boot:run
 ```
 
 ## Docker
 On Windows 10 you should enable Settings->General->'Expose daemon on tcp://localhost:2375'
 
 ```bash
-$ ./mvnw install dockerfile:build
+$ mvn install dockerfile:build
 
 $ docker run -p 8080:8080 -t lsmhun/droolsfools
 
@@ -35,7 +35,6 @@ $ docker run -p 8080:8080 -t lsmhun/droolsfools
 
 
 ## Badges
-[![CircleCI](https://circleci.com/gh/lsmhun/droolsfools.svg?style=shield)](https://circleci.com/gh/lsmhun/droolsfools)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_shield)
 
 ## License
