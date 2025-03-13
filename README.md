@@ -10,7 +10,6 @@ There are an IncomingData object with errorCode and value parameters and based o
 
 ## See
 Articles and howtos: 
-* https://github.com/eugenp/tutorials
 * https://github.com/kiegroup/drools/blob/master/drools-examples-api/kiefilesystem-example/src/main/java/org/drools/example/api/kiefilesystem/KieFileSystemExample.java
 * https://spring.io/guides/gs/spring-boot-docker/
 
