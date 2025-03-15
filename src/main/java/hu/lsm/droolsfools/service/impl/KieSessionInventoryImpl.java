@@ -4,7 +4,6 @@ import hu.lsm.droolsfools.compiler.EEARuleConverter;
 import hu.lsm.droolsfools.dao.RuleRepository;
 import hu.lsm.droolsfools.entity.EEARule;
 import hu.lsm.droolsfools.service.KieSessionInventory;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
@@ -17,8 +16,6 @@ import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.logger.KieRuntimeLogger;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,19 +38,17 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
 
     private final Map<String, KieSession> kieSessionMap = new HashMap<>();
 
-    private KieServices kieServices;
+    private final KieServices kieServices;
 
     @Autowired
     public KieSessionInventoryImpl(final RuleRepository ruleRepository,
                                    final EEARuleConverter eeaRuleConverter) {
         this.ruleRepository = ruleRepository;
         this.eeaRuleConverter = eeaRuleConverter;
+        // This is an ugly code, but for the demo, it is OK.
+        this.kieServices = KieServices.Factory.get();
     }
 
-    @PostConstruct
-    private void init() {
-        kieServices = KieServices.Factory.get();
-    }
 
     @Override
     public KieSession getKieSession(String repositoryId) {
@@ -112,9 +107,6 @@ public class KieSessionInventoryImpl implements KieSessionInventory {
 
     private KieSession initKieSession(String repositoryId) {
 
-        if (kieServices == null) {
-            init();
-        }
         addRules(repositoryId);
 
         KieRepository kieRepository = kieServices.getRepository();
