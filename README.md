@@ -1,3 +1,6 @@
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_shield)
+![GA Maven Build](https://github.com/lsmhun/droolsfools/actions/workflows/maven.yml/badge.svg)
+
 # Drools Fools
 
 Drools based rule engine for basic use cases, with dynamic rule management. UI is based on Vue.js
@@ -31,10 +34,6 @@ $ mvn install dockerfile:build
 $ docker run -p 8080:8080 -t lsmhun/droolsfools
 
 ```
-
-
-## Badges
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_shield)
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Flsmhun%2Fdroolsfools?ref=badge_large)
